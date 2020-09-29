@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Core.Domain.Auction.Events;
-using Core.Domain.Auction.Results;
+using Core.Domains.AuctionAggregate.Events;
+using Core.Domains.AuctionAggregate.Results;
 
-namespace Core.Domain.Auction
+namespace Core.Domains.AuctionAggregate
 {
     public class Auction
     {

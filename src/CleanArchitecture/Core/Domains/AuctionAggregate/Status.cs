@@ -1,4 +1,4 @@
-﻿namespace Core.Domain.Auction
+﻿namespace Core.Domains.AuctionAggregate
 {
     public enum Status
     {

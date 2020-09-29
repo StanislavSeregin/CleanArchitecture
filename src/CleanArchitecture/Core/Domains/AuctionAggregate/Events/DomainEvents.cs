@@ -1,4 +1,4 @@
-﻿namespace Core.Domain.Auction.Events
+﻿namespace Core.Domains.AuctionAggregate.Events
 {
     public static class DomainEvents
     {

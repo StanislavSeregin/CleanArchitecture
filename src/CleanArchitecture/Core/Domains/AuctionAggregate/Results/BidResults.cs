@@ -1,4 +1,4 @@
-﻿namespace Core.Domain.Auction.Results
+﻿namespace Core.Domains.AuctionAggregate.Results
 {
     public static class BidResults
     {

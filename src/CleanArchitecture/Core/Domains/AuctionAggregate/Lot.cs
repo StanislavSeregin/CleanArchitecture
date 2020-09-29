@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Domain.Auction
+namespace Core.Domains.AuctionAggregate
 {
     public class Lot
     {
