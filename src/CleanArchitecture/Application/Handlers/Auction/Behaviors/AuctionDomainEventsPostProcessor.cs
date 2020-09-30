@@ -8,14 +8,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Handlers.Auction.Behaviors
 {
-    public class AuctionDomainEventsBehavior<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse>
+    public class AuctionDomainEventsPostProcessor<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse>
         where TRequest : IAuctionCommand
         where TResponse : Core.Domains.AuctionAggregate.Auction
     {
-        private readonly ILogger<AuctionDomainEventsBehavior<TRequest, TResponse>> _logger;
+        private readonly ILogger<AuctionDomainEventsPostProcessor<TRequest, TResponse>> _logger;
 
-        public AuctionDomainEventsBehavior(
-            ILogger<AuctionDomainEventsBehavior<TRequest, TResponse>> logger
+        public AuctionDomainEventsPostProcessor(
+            ILogger<AuctionDomainEventsPostProcessor<TRequest, TResponse>> logger
         )
         {
             _logger = logger;

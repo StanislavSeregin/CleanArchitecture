@@ -12,7 +12,7 @@ namespace Application.Extensions
             var assembly = typeof(ServiceCollectionExtensions).Assembly;
             return services
                 .AddMediatR(assembly)
-                .AddScoped(typeof(IRequestPostProcessor<,>), typeof(AuctionDomainEventsBehavior<,>));
+                .AddScoped(typeof(IRequestPostProcessor<,>), typeof(AuctionDomainEventsPostProcessor<,>));
         }
     }
 }
