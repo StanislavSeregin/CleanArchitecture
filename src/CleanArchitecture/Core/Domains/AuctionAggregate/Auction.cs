@@ -34,7 +34,6 @@ namespace Core.Domains.AuctionAggregate
             BidStep = 1000;
             CreatedAt = DateTimeOffset.Now;
             _bids = new List<Bid>();
-            AddDomainEvent(Events.AuctionDomainEvents.Created());
         }
 
         public Auction Activate(DateTimeOffset closeTo)
@@ -49,7 +48,7 @@ namespace Core.Domains.AuctionAggregate
 
             ActivatedAt = now;
             Status = Status.Active;
-            AddDomainEvent(Events.AuctionDomainEvents.Activated());
+            AddDomainEvent(AuctionDomainEvents.Activated());
             return this;
         }
 
@@ -60,7 +59,7 @@ namespace Core.Domains.AuctionAggregate
 
             Status = Status.Closed;
             ClosedAt = DateTimeOffset.Now;
-            AddDomainEvent(Events.AuctionDomainEvents.Closed());
+            AddDomainEvent(AuctionDomainEvents.Closed());
             return this;
         }
 
@@ -107,12 +106,12 @@ namespace Core.Domains.AuctionAggregate
             if (BuyoutPrice.HasValue && bid.Price > BuyoutPrice)
             {
                 Close();
-                AddDomainEvent(Events.AuctionDomainEvents.Buyouted());
+                AddDomainEvent(AuctionDomainEvents.Buyouted());
                 return BidResults.Buyout();
             }
             else
             {
-                AddDomainEvent(Events.AuctionDomainEvents.NewBid());
+                AddDomainEvent(AuctionDomainEvents.NewBid());
                 return BidResults.Ok();
             }
         }

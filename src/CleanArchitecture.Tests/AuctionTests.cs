@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
@@ -7,6 +8,7 @@ using Core.Domains.AuctionAggregate;
 using Data.Extensions;
 using Application.Extensions;
 using Application.Handlers.Auction.Commands;
+using Infrastructure.Extensions;
 
 namespace Tests
 {
@@ -20,6 +22,7 @@ namespace Tests
                 .AddLogging()
                 .AddInMemoryAuctionDb()
                 .AddAuctionDbMigrator()
+                .AddInfrastructure()
                 .AddApplication()
                 .BuildServiceProvider();
 
@@ -29,7 +32,7 @@ namespace Tests
         [Fact]
         public async Task Auction_Create_IdShouldBeGreaterThanZero()
         {
-            var lot = new Lot("Some description");
+            var lot = new Lot(Guid.NewGuid(), "Some description");
             var auction = await _mediator.Send(new CreateAuctionCommand(lot));
             auction.Id.Should().BeGreaterThan(0);
         }

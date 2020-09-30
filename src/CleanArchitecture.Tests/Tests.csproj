@@ -22,6 +22,7 @@
     <ProjectReference Include="..\CleanArchitecture\Application\Application.csproj" />
     <ProjectReference Include="..\CleanArchitecture\Core\Core.csproj" />
     <ProjectReference Include="..\CleanArchitecture\Data\Data.csproj" />
+    <ProjectReference Include="..\CleanArchitecture\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

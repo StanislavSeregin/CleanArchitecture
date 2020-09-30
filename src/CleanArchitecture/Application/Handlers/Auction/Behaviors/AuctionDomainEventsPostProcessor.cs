@@ -2,9 +2,10 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Core.Domains.AuctionAggregate.Events;
-using MediatR.Pipeline;
 using Microsoft.Extensions.Logging;
+using MediatR.Pipeline;
+using Core.Domains.AuctionAggregate.Events;
+using Core.IServices;
 
 namespace Application.Handlers.Auction.Behaviors
 {
@@ -13,32 +14,35 @@ namespace Application.Handlers.Auction.Behaviors
         where TResponse : Core.Domains.AuctionAggregate.Auction
     {
         private readonly ILogger<AuctionDomainEventsPostProcessor<TRequest, TResponse>> _logger;
+        private readonly IAuctionNotificationService _auctionNotificationService;
 
         public AuctionDomainEventsPostProcessor(
-            ILogger<AuctionDomainEventsPostProcessor<TRequest, TResponse>> logger
+            ILogger<AuctionDomainEventsPostProcessor<TRequest, TResponse>> logger,
+            IAuctionNotificationService auctionNotificationService
         )
         {
             _logger = logger;
+            _auctionNotificationService = auctionNotificationService;
         }
 
-        public Task Process(TRequest request, TResponse response, CancellationToken cancellationToken)
+        public Task Process(TRequest request, TResponse auction, CancellationToken cancellationToken)
         {
-            var domainEvents = response.GetDomainEvents();
-            return Task.WhenAll(domainEvents.Select(HandleDomainEventAsync));
+            var domainEvents = auction.GetDomainEvents();
+            var tasks = domainEvents.Select(domainEvent => HandleDomainEventAsync(domainEvent, auction));
+            return Task.WhenAll(tasks);
         }
 
-        private async Task HandleDomainEventAsync(IAuctionDomainEvent domainEvent)
+        private async Task HandleDomainEventAsync(IAuctionDomainEvent domainEvent, Core.Domains.AuctionAggregate.Auction auction)
         {
             Task task;
             try
             {
                 task = domainEvent switch
                 {
-                    Created _ => Task.CompletedTask,
-                    Activated _ => Task.CompletedTask,
-                    NewBid _ => Task.CompletedTask,
-                    Buyouted _ => Task.CompletedTask,
-                    Closed _ => Task.CompletedTask,
+                    Activated _ => _auctionNotificationService.NotifyAboutActivationAsync(auction),
+                    NewBid _ => _auctionNotificationService.NotifyAboutNewBidAsync(auction),
+                    Buyouted _ => _auctionNotificationService.NotifyAboutBuyoutAsync(auction),
+                    Closed _ => _auctionNotificationService.NotifyAboutCloseAsync(auction),
                     _ => ActionAsTask(() => _logger.LogError($"Unexpected domain event type: '{domainEvent.GetType().Name}'"))
                 };
 
