@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30517.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{187C9E74-A50C-4115-A70B-C8657FC9A5A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "src\CleanArchitecture\Core\Core.csproj", "{187C9E74-A50C-4115-A70B-C8657FC9A5A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{9317C6AA-D0FD-45B0-A57F-9FC934B64551}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\CleanArchitecture\Application\Application.csproj", "{9317C6AA-D0FD-45B0-A57F-9FC934B64551}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{F7CCC602-35E3-4ED1-B335-EC157C3B64B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "src\CleanArchitecture\Data\Data.csproj", "{F7CCC602-35E3-4ED1-B335-EC157C3B64B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "src\CleanArchitecture.Tests\Tests.csproj", "{7DE04156-FD33-49FB-A9BB-F9F0B6627A48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{F7CCC602-35E3-4ED1-B335-EC157C3B64B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7CCC602-35E3-4ED1-B335-EC157C3B64B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7CCC602-35E3-4ED1-B335-EC157C3B64B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DE04156-FD33-49FB-A9BB-F9F0B6627A48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DE04156-FD33-49FB-A9BB-F9F0B6627A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DE04156-FD33-49FB-A9BB-F9F0B6627A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DE04156-FD33-49FB-A9BB-F9F0B6627A48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
