@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Data.Auction;
+using Data.AuctionDb;
 using Core.Domains.AuctionAggregate;
 
 namespace Data.Extensions

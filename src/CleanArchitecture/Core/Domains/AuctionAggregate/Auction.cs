@@ -8,6 +8,9 @@ namespace Core.Domains.AuctionAggregate
 {
     public class Auction
     {
+        public const decimal DefaultBiddingStartsWith = 1000;
+        public const decimal DefaultBidStep = 1000;
+
         public int Id { get; private set; }
         public Lot Lot { get; private set; }
         public Status Status { get; private set; }
@@ -30,8 +33,8 @@ namespace Core.Domains.AuctionAggregate
         {
             Lot = lot ?? throw new ArgumentNullException(nameof(lot));
             Status = Status.None;
-            BiddingStartsWith = 1000;
-            BidStep = 1000;
+            BiddingStartsWith = DefaultBiddingStartsWith;
+            BidStep = DefaultBidStep;
             CreatedAt = DateTimeOffset.Now;
             _bids = new List<Bid>();
         }
@@ -49,17 +52,6 @@ namespace Core.Domains.AuctionAggregate
             ActivatedAt = now;
             Status = Status.Active;
             AddDomainEvent(AuctionDomainEvents.Activated());
-            return this;
-        }
-
-        public Auction Close()
-        {
-            if (Status == Status.Closed)
-                throw new InvalidOperationException($"{nameof(Status)} already '{nameof(Status.Closed)}'");
-
-            Status = Status.Closed;
-            ClosedAt = DateTimeOffset.Now;
-            AddDomainEvent(AuctionDomainEvents.Closed());
             return this;
         }
 
@@ -114,6 +106,17 @@ namespace Core.Domains.AuctionAggregate
                 AddDomainEvent(AuctionDomainEvents.NewBid());
                 return BidResults.Ok();
             }
+        }
+
+        public Auction Close()
+        {
+            if (Status == Status.Closed)
+                throw new InvalidOperationException($"{nameof(Status)} already '{nameof(Status.Closed)}'");
+
+            Status = Status.Closed;
+            ClosedAt = DateTimeOffset.Now;
+            AddDomainEvent(AuctionDomainEvents.Closed());
+            return this;
         }
 
         public IEnumerable<IAuctionDomainEvent> GetDomainEvents()

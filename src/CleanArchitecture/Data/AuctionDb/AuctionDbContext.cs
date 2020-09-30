@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Core.Domains.AuctionAggregate;
 
-namespace Data.Auction
+namespace Data.AuctionDb
 {
     public class AuctionDbContext : DbContext
     {
@@ -11,6 +12,6 @@ namespace Data.Auction
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Core.Domains.AuctionAggregate.Auction> Auctions { get; set; }
+        public DbSet<Auction> Auctions { get; set; }
     }
 }

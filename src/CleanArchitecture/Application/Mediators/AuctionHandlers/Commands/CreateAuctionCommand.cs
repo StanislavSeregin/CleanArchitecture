@@ -3,11 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Core.Domains.AuctionAggregate;
-using Application.Handlers.Auction.Notifications;
+using Application.Mediators.AuctionHandlers.Notifications;
 
-namespace Application.Handlers.Auction.Commands
+namespace Application.Mediators.AuctionHandlers.Commands
 {
-    public class CreateAuctionCommand : IRequest<Core.Domains.AuctionAggregate.Auction>
+    public class CreateAuctionCommand : IRequest<Auction>
     {
         public Lot Lot { get; private set; }
 
@@ -17,7 +17,7 @@ namespace Application.Handlers.Auction.Commands
         }
     }
 
-    public class CreateAuctionCommandHandler : IRequestHandler<CreateAuctionCommand, Core.Domains.AuctionAggregate.Auction>
+    public class CreateAuctionCommandHandler : IRequestHandler<CreateAuctionCommand, Auction>
     {
         private readonly IMediator _mediator;
         private readonly IAuctionRepository _auctionRepository;
@@ -31,9 +31,9 @@ namespace Application.Handlers.Auction.Commands
             _auctionRepository = auctionRepository;
         }
 
-        public async Task<Core.Domains.AuctionAggregate.Auction> Handle(CreateAuctionCommand request, CancellationToken cancellationToken)
+        public async Task<Auction> Handle(CreateAuctionCommand request, CancellationToken cancellationToken)
         {
-            var auction = new Core.Domains.AuctionAggregate.Auction(request.Lot);
+            var auction = new Auction(request.Lot);
             await _auctionRepository.InsertAsync(auction);
             await _mediator.Publish(new AuctionPersistedNotification(auction));
             return auction;

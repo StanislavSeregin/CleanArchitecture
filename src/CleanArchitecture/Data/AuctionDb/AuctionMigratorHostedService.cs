@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Data.Auction
+namespace Data.AuctionDb
 {
     public class AuctionMigratorHostedService : IHostedService
     {

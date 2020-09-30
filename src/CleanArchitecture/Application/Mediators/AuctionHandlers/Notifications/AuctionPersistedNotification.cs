@@ -7,7 +7,7 @@ using MediatR;
 using Core.Domains.AuctionAggregate.Events;
 using Core.IServices;
 
-namespace Application.Handlers.Auction.Notifications
+namespace Application.Mediators.AuctionHandlers.Notifications
 {
     public class AuctionPersistedNotification : INotification
     {
@@ -58,14 +58,14 @@ namespace Application.Handlers.Auction.Notifications
                     NewBid _ => _auctionNotificationService.NotifyAboutNewBidAsync(auction),
                     Buyouted _ => _auctionNotificationService.NotifyAboutBuyoutAsync(auction),
                     Closed _ => _auctionNotificationService.NotifyAboutCloseAsync(auction),
-                    _ => ActionAsTask(() => _logger.LogError($"Unexpected domain event type: '{domainEvent.GetType().Name}'"))
+                    _ => ActionAsTask(() => _logger.LogError($"Unexpected auction domain event type: '{domainEvent.GetType().Name}'"))
                 };
 
                 await task;
             }
             catch (Exception e)
             {
-                _logger.LogError($"Error handling domain event: '{domainEvent.GetType().Name}'", e);
+                _logger.LogError($"Error handle auction domain event: '{domainEvent.GetType().Name}'", e);
             }
         }
 
