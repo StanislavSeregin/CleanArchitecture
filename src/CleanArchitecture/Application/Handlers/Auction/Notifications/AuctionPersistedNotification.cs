@@ -3,21 +3,29 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using MediatR.Pipeline;
+using MediatR;
 using Core.Domains.AuctionAggregate.Events;
 using Core.IServices;
 
-namespace Application.Handlers.Auction.Behaviors
+namespace Application.Handlers.Auction.Notifications
 {
-    public class AuctionDomainEventsPostProcessor<TRequest, TResponse> : IRequestPostProcessor<TRequest, TResponse>
-        where TRequest : IAuctionCommand
-        where TResponse : Core.Domains.AuctionAggregate.Auction
+    public class AuctionPersistedNotification : INotification
     {
-        private readonly ILogger<AuctionDomainEventsPostProcessor<TRequest, TResponse>> _logger;
+        public Core.Domains.AuctionAggregate.Auction Auction { get; private set; }
+
+        public AuctionPersistedNotification(Core.Domains.AuctionAggregate.Auction auction)
+        {
+            Auction = auction;
+        }
+    }
+
+    public class AuctionPersistedNotificationHandler : INotificationHandler<AuctionPersistedNotification>
+    {
+        private readonly ILogger<AuctionPersistedNotificationHandler> _logger;
         private readonly IAuctionNotificationService _auctionNotificationService;
 
-        public AuctionDomainEventsPostProcessor(
-            ILogger<AuctionDomainEventsPostProcessor<TRequest, TResponse>> logger,
+        public AuctionPersistedNotificationHandler(
+            ILogger<AuctionPersistedNotificationHandler> logger,
             IAuctionNotificationService auctionNotificationService
         )
         {
@@ -25,11 +33,18 @@ namespace Application.Handlers.Auction.Behaviors
             _auctionNotificationService = auctionNotificationService;
         }
 
-        public Task Process(TRequest request, TResponse auction, CancellationToken cancellationToken)
+        public async Task Handle(AuctionPersistedNotification notification, CancellationToken cancellationToken)
         {
-            var domainEvents = auction.GetDomainEvents();
-            var tasks = domainEvents.Select(domainEvent => HandleDomainEventAsync(domainEvent, auction));
-            return Task.WhenAll(tasks);
+            try
+            {
+                var (domainEvents, auction) = (notification.Auction.GetDomainEvents(), notification.Auction);
+                var tasks = domainEvents.Select(domainEvent => HandleDomainEventAsync(domainEvent, auction));
+                await Task.WhenAll(tasks);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error handle auction domain events", e);
+            }
         }
 
         private async Task HandleDomainEventAsync(IAuctionDomainEvent domainEvent, Core.Domains.AuctionAggregate.Auction auction)
