@@ -1,6 +1,7 @@
-﻿using Application.Handlers.Auction.Behaviors;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
+using MediatR.Pipeline;
+using Application.Handlers.Auction.Behaviors;
 
 namespace Application.Extensions
 {
@@ -11,7 +12,7 @@ namespace Application.Extensions
             var assembly = typeof(ServiceCollectionExtensions).Assembly;
             return services
                 .AddMediatR(assembly)
-                .AddScoped(typeof(IPipelineBehavior<,>), typeof(AuctionDomainEventsBehavior<,>));
+                .AddScoped(typeof(IRequestPostProcessor<,>), typeof(AuctionDomainEventsBehavior<,>));
         }
     }
 }

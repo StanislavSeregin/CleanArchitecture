@@ -22,7 +22,7 @@ namespace Core.Domains.AuctionAggregate
         private readonly List<Bid> _bids;
         public IReadOnlyCollection<Bid> Bids => _bids;
 
-        private List<IDomainEvent> DomainEvents { get; set; }
+        private List<IAuctionDomainEvent> DomainEvents { get; set; }
 
         private Auction() { }
 
@@ -34,7 +34,7 @@ namespace Core.Domains.AuctionAggregate
             BidStep = 1000;
             CreatedAt = DateTimeOffset.Now;
             _bids = new List<Bid>();
-            AddDomainEvent(Events.DomainEvents.Created());
+            AddDomainEvent(Events.AuctionDomainEvents.Created());
         }
 
         public Auction Activate(DateTimeOffset closeTo)
@@ -49,7 +49,7 @@ namespace Core.Domains.AuctionAggregate
 
             ActivatedAt = now;
             Status = Status.Active;
-            AddDomainEvent(Events.DomainEvents.Activated());
+            AddDomainEvent(Events.AuctionDomainEvents.Activated());
             return this;
         }
 
@@ -60,7 +60,7 @@ namespace Core.Domains.AuctionAggregate
 
             Status = Status.Closed;
             ClosedAt = DateTimeOffset.Now;
-            AddDomainEvent(Events.DomainEvents.Closed());
+            AddDomainEvent(Events.AuctionDomainEvents.Closed());
             return this;
         }
 
@@ -107,22 +107,22 @@ namespace Core.Domains.AuctionAggregate
             if (BuyoutPrice.HasValue && bid.Price > BuyoutPrice)
             {
                 Close();
-                AddDomainEvent(Events.DomainEvents.Buyouted());
+                AddDomainEvent(Events.AuctionDomainEvents.Buyouted());
                 return BidResults.Buyout();
             }
             else
             {
-                AddDomainEvent(Events.DomainEvents.NewBid());
+                AddDomainEvent(Events.AuctionDomainEvents.NewBid());
                 return BidResults.Ok();
             }
         }
 
-        public IEnumerable<IDomainEvent> GetDomainEvents()
-            => DomainEvents.AsEnumerable() ?? Array.Empty<IDomainEvent>();
+        public IEnumerable<IAuctionDomainEvent> GetDomainEvents()
+            => DomainEvents.AsEnumerable() ?? Array.Empty<IAuctionDomainEvent>();
 
-        private void AddDomainEvent(IDomainEvent domainEvent)
+        private void AddDomainEvent(IAuctionDomainEvent domainEvent)
         {
-            DomainEvents ??= new List<IDomainEvent>();
+            DomainEvents ??= new List<IAuctionDomainEvent>();
             DomainEvents.Add(domainEvent);
         }
 
