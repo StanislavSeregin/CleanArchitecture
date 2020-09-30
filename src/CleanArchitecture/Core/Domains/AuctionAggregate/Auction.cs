@@ -95,7 +95,7 @@ namespace Core.Domains.AuctionAggregate
                 return BidResults.BidTooSmall(minimumAllowedBidPrice);
 
             _bids.Add(bid);
-            if (BuyoutPrice.HasValue && bid.Price > BuyoutPrice)
+            if (BuyoutPrice.HasValue && bid.Price >= BuyoutPrice)
             {
                 Close();
                 AddDomainEvent(AuctionDomainEvents.Buyouted());
