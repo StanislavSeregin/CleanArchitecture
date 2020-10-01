@@ -2,6 +2,7 @@
 using MediatR;
 using Core.IServices;
 using Application.Services;
+using Application.Mediators.CommonHandlers;
 
 namespace Application.Extensions
 {
@@ -12,6 +13,8 @@ namespace Application.Extensions
             var assembly = typeof(ServiceCollectionExtensions).Assembly;
             return services
                 .AddMediatR(assembly)
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>))
+                .AddScoped(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>))
                 .AddScoped<IAuctionNotificationService, AuctionNotificationService>();
         }
     }

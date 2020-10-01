@@ -7,7 +7,7 @@ using Application.Mediators.AuctionHandlers.Notifications;
 
 namespace Application.Mediators.AuctionHandlers.Commands
 {
-    public class CreateAuctionCommand : IRequest<Auction>
+    public class CreateAuctionCommand : IRequest<Auction>, IAuctionCommand
     {
         public Lot Lot { get; private set; }
 

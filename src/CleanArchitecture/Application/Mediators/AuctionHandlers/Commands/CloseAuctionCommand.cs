@@ -6,7 +6,7 @@ using Application.Mediators.AuctionHandlers.Notifications;
 
 namespace Application.Mediators.AuctionHandlers.Commands
 {
-    public class CloseAuctionCommand : IRequest<Auction>
+    public class CloseAuctionCommand : IRequest<Auction>, IAuctionCommand
     {
         public int AuctionId { get; private set; }
 

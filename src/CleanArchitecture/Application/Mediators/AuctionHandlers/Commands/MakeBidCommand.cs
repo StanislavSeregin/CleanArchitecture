@@ -7,7 +7,7 @@ using Application.Mediators.AuctionHandlers.Notifications;
 
 namespace Application.Mediators.AuctionHandlers.Commands
 {
-    public class MakeBidCommand : IRequest<IBidResult>
+    public class MakeBidCommand : IRequest<IBidResult>, IAuctionCommand
     {
         public int AuctionId { get; private set; }
         public Bid Bid { get; private set; }
