@@ -39,22 +39,6 @@ namespace Core.Domains.AuctionAggregate
             _bids = new List<Bid>();
         }
 
-        public Auction Activate(DateTimeOffset closeTo)
-        {
-            if (Status != Status.None)
-                throw new InvalidOperationException($"{nameof(Status)} should be {nameof(Status.None)}");
-
-            var now = DateTimeOffset.Now;
-            CloseTo = closeTo > now
-                ? closeTo
-                : throw new ArgumentOutOfRangeException(nameof(closeTo));
-
-            ActivatedAt = now;
-            Status = Status.Active;
-            AddDomainEvent(AuctionDomainEvents.Activated());
-            return this;
-        }
-
         public Auction ConfigureRules(
             decimal biddingStartsWith,
             decimal bidStep,
@@ -79,6 +63,22 @@ namespace Core.Domains.AuctionAggregate
                 _ => buyoutPrice
             };
 
+            return this;
+        }
+
+        public Auction Activate(DateTimeOffset closeTo)
+        {
+            if (Status != Status.None)
+                throw new InvalidOperationException($"{nameof(Status)} should be {nameof(Status.None)}");
+
+            var now = DateTimeOffset.Now;
+            CloseTo = closeTo > now
+                ? closeTo
+                : throw new ArgumentOutOfRangeException(nameof(closeTo));
+
+            ActivatedAt = now;
+            Status = Status.Active;
+            AddDomainEvent(AuctionDomainEvents.Activated());
             return this;
         }
 
