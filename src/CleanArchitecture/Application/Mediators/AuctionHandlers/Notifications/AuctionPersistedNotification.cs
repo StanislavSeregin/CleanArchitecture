@@ -6,14 +6,15 @@ using Microsoft.Extensions.Logging;
 using MediatR;
 using Core.Domains.AuctionAggregate.Events;
 using Core.IServices;
+using Core.Domains.AuctionAggregate;
 
 namespace Application.Mediators.AuctionHandlers.Notifications
 {
     public class AuctionPersistedNotification : INotification
     {
-        public Core.Domains.AuctionAggregate.Auction Auction { get; private set; }
+        public Auction Auction { get; private set; }
 
-        public AuctionPersistedNotification(Core.Domains.AuctionAggregate.Auction auction)
+        public AuctionPersistedNotification(Auction auction)
         {
             Auction = auction;
         }
@@ -47,7 +48,7 @@ namespace Application.Mediators.AuctionHandlers.Notifications
             }
         }
 
-        private async Task HandleDomainEventAsync(IAuctionDomainEvent domainEvent, Core.Domains.AuctionAggregate.Auction auction)
+        private async Task HandleDomainEventAsync(IAuctionDomainEvent domainEvent, Auction auction)
         {
             Task task;
             try
