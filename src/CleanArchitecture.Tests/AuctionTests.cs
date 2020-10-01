@@ -55,6 +55,9 @@ namespace Tests
             var closeAuctionCommand = new CloseAuctionCommand(auction.Id);
             auction = await _mediator.Send(closeAuctionCommand);
             auction.Status.Should().Be(Status.Closed);
+
+            auction = await _mediator.Send(new AuctionQuery(auction.Id));
+            auction.Should().NotBeNull();
         }
 
         [Fact]

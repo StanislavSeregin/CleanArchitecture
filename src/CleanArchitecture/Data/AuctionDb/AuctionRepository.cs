@@ -16,6 +16,13 @@ namespace Data.AuctionDb
             _auctionDbContext = auctionDbContext;
         }
 
+        public async Task<Auction> GetAsync(int auctionId)
+        {
+            var aggregate = await GetAggregateAsync(auctionId, true);
+            _auctionDbContext.Entry(aggregate).State = EntityState.Detached;
+            return aggregate;
+        }
+
         public async Task InsertAsync(Auction auction)
         {
             if (auction == null)
