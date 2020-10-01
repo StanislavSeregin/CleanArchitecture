@@ -50,12 +50,12 @@ namespace Application.Mediators.AuctionHandlers.Commands
             var (auction, _) = await _auctionRepository.UpdateAsync(
                 request.AuctionId,
                 auction => auction
-                    .Activate(request.AuctionCloseTo)
                     .ConfigureRules(
                         request.BiddingStartsWith ?? Auction.DefaultBiddingStartsWith,
                         request.BidStep ?? Auction.DefaultBidStep,
                         request.BuyoutPrice
                     )
+                    .Activate(request.AuctionCloseTo)
             );
 
             await _mediator.Publish(new AuctionPersistedNotification(auction));
