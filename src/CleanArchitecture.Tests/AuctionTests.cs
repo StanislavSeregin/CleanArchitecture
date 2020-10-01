@@ -79,6 +79,10 @@ namespace Tests
 
             var activeAuctionIds = await _mediator.Send(new ActiveAuctionIdsQuery());
             activeAuctionIds.Should().NotContain(auction.Id);
+
+            var bidsByPeriodQuery = new BidsByPeriodQuery(DateTimeOffset.Now.AddHours(-1), DateTimeOffset.Now.AddHours(1));
+            var topBids = await _mediator.Send(bidsByPeriodQuery);
+            topBids.Should().NotBeEmpty();
         }
     }
 }

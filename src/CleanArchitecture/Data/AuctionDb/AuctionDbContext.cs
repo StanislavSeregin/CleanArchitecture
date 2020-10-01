@@ -13,5 +13,6 @@ namespace Data.AuctionDb
         }
 
         public DbSet<Auction> Auctions { get; set; }
+        public DbSet<Bid> Bids { get; set; }
     }
 }
